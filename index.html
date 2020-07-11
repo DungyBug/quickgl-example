@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body style="padding: 0; margin: 0">
+    <script id="shader-fs" type="x-shader/x-fragment">
+        precision highp float;
+
+        varying vec4 vColor;
+
+        void main(void) {
+            gl_FragColor = vColor;
+        }
+      </script>
+
+      <!--
+          <script id="shader-fs" type="x-shader/x-fragment">
+        precision mediump float;
+
+        varying vec2 vTextureCoord;
+      
+        uniform sampler2D uSampler;
+      
+        void main(void) {
+            gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+        }
+      </script>
+      -->
+      
+      <script id="shader-vs" type="x-shader/x-vertex">
+        attribute vec3 aVertexPosition;
+        attribute vec4 aVertexColor;
+
+        uniform mat4 uMVMatrix;
+        uniform mat4 uPMatrix;
+      
+        varying vec4 vColor;
+        varying vec4 aVertexAmbient;
+      
+        void main(void) {
+            aVertexAmbient = vec4(0.0, 0.0, 0.0, 0.0);    
+            gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+            aVertexAmbient += gl_Position * vec4(1, 0.3, 0.1, 1.0);
+            vColor = aVertexColor * aVertexAmbient;
+        }      
+    </script>
+    <script src="gl-matrix.js"></script>
+    <script src="quick.gl.js"></script>
+    <script src="example.js"></script>
+</body>
+</html>
